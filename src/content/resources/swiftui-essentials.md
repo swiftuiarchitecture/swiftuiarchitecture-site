@@ -10,7 +10,7 @@ topics:
 difficulty: "beginner"
 url: "https://developer.apple.com/videos/play/wwdc2024/10150/"
 publishedDate: "2024-06-10"
-featured: true
+featured: false
 summary: "A comprehensive introduction to SwiftUI that explains its declarative programming model, view composition, state management, animations, adaptive controls, and interoperability with UIKit, AppKit, and other Apple frameworks."
 editorNote: "One of the best starting points for learning SwiftUI. Taylor explains the core mental model behind SwiftUI—declarative views, composition, and state—in a way that helps developers build a strong foundation before exploring more advanced topics."
 duration: "24 min"
