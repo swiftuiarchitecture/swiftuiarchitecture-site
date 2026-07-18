@@ -14,7 +14,7 @@ Open the address printed by Astro, usually `http://localhost:4321`.
 
 ## Add a new resource
 
-Create a Markdown file inside:
+Create a Markdown file inside:  
 
 ```text
 src/content/resources/
