@@ -1,5 +1,5 @@
 ---
-title: "SwiftData Architecture"
+title: "SwiftData Architecture - Patterns and Practices for Building Scalable Applications"
 author: "Mohammad Azam"
 resourceType: "book"
 topics:

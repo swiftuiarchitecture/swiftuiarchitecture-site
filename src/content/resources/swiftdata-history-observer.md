@@ -6,7 +6,7 @@ topics:
   - "swiftdata"
   - "networking"
 difficulty: "advanced"
-url: "https://azamsharp.com"
+url: "https://azamsharp.com/2026/07/16/syncing-swiftdata-with-a-custom-backend-using-historyobserver.html"
 publishedDate: "2026-07-16"
 featured: true
 summary: "A practical walkthrough of observing SwiftData history and sending local changes to a custom backend."

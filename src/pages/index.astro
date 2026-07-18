@@ -10,13 +10,24 @@ const resources = (await getCollection("resources")).sort(
   (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf()
 );
 
-const featured = resources.filter((resource) => resource.data.featured).slice(0, 3);
-const recent = resources.slice(0, 6);
+const featured = resources
+  .filter((resource) => resource.data.featured)
+  .slice(0, 3);
+
+const recent = resources
+  .filter((resource) => resource.data.resourceType !== "book")
+  .slice(0, 6);
+
+const books = resources
+  .filter((resource) => resource.data.resourceType === "book")
+  .slice(0, 6);
 
 const counts = Object.fromEntries(
   topics.map((topic) => [
     topic.slug,
-    resources.filter((resource) => resource.data.topics.includes(topic.slug)).length
+    resources.filter((resource) =>
+      resource.data.topics.includes(topic.slug)
+    ).length
   ])
 );
 ---
@@ -26,24 +37,44 @@ const counts = Object.fromEntries(
     <div class="container hero-grid">
       <div class="hero-copy">
         <span class="eyebrow"><span></span> Community-curated</span>
+
         <h1>
           Learn better
           <span class="gradient-text">SwiftUI architecture.</span>
         </h1>
+
         <p>
           Discover thoughtfully selected articles, videos, books, talks, and
           open-source projects from across the Swift community.
         </p>
 
         <div class="hero-actions">
-          <a class="button button-primary" href="/resources/">Explore Resources</a>
-          <a class="button button-secondary" href="/topics/">Browse Topics</a>
+          <a class="button button-primary" href="/resources/">
+            Explore Resources
+          </a>
+
+          <a class="button button-secondary" href="/topics/">
+            Browse Topics
+          </a>
         </div>
 
         <div class="hero-stats">
-          <div><strong>{resources.length}</strong><span>Curated resources</span></div>
-          <div><strong>{topics.length}</strong><span>Architecture topics</span></div>
-          <div><strong>{new Set(resources.map((r) => r.data.author)).size}</strong><span>Creators</span></div>
+          <div>
+            <strong>{resources.length}</strong>
+            <span>Curated resources</span>
+          </div>
+
+          <div>
+            <strong>{topics.length}</strong>
+            <span>Architecture topics</span>
+          </div>
+
+          <div>
+            <strong>
+              {new Set(resources.map((resource) => resource.data.author)).size}
+            </strong>
+            <span>Creators</span>
+          </div>
         </div>
       </div>
 
@@ -63,7 +94,9 @@ const counts = Object.fromEntries(
             >
               <span>{resource.data.resourceType.replace("-", " ")}</span>
               <h2>{resource.data.title}</h2>
-              <p>{resource.data.author} · {resource.data.difficulty}</p>
+              <p>
+                {resource.data.author} · {resource.data.difficulty}
+              </p>
             </a>
           ))}
         </div>
@@ -71,6 +104,7 @@ const counts = Object.fromEntries(
     </div>
   </section>
 
+  <!--
   <section class="section">
     <div class="container">
       <div class="section-heading">
@@ -79,7 +113,10 @@ const counts = Object.fromEntries(
           <h2>Browse by topic</h2>
           <p>Start with the architectural problem you are trying to solve.</p>
         </div>
-        <a class="section-link" href="/topics/">View all topics →</a>
+
+        <a class="section-link" href="/topics/">
+          View all topics →
+        </a>
       </div>
 
       <div class="topic-grid">
@@ -89,6 +126,7 @@ const counts = Object.fromEntries(
       </div>
     </div>
   </section>
+  -->
 
   <section class="section section-muted">
     <div class="container">
@@ -98,26 +136,62 @@ const counts = Object.fromEntries(
           <h2>Recently curated</h2>
           <p>Useful resources selected for clarity and practical relevance.</p>
         </div>
-        <a class="section-link" href="/resources/">Browse the library →</a>
+
+        <a class="section-link" href="/resources/">
+          Browse the library →
+        </a>
       </div>
 
       <div class="resource-grid">
-        {recent.map((resource) => <ResourceCard resource={resource} />)}
+        {recent.map((resource) => (
+          <ResourceCard resource={resource} />
+        ))}
       </div>
     </div>
   </section>
+
+  {books.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Books</span>
+            <h2>Essential SwiftUI architecture books</h2>
+            <p>
+              Carefully selected books covering architecture, state management,
+              data flow, persistence, and application design.
+            </p>
+          </div>
+
+          <a class="section-link" href="/resources/?type=book">
+            View all books →
+          </a>
+        </div>
+
+        <div class="resource-grid">
+          {books.map((book) => (
+            <ResourceCard resource={book} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="section">
     <div class="container community-callout">
       <div>
         <span class="section-kicker light">Community</span>
         <h2>Published something useful?</h2>
+
         <p>
           Submit an article, video, conference talk, book, or open-source project
           for consideration.
         </p>
       </div>
-      <a class="button button-light" href="/submit/">Submit a Resource</a>
+
+      <a class="button button-light" href="/submit/">
+        Submit a Resource
+      </a>
     </div>
   </section>
 

@@ -9,70 +9,183 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <section class="page-hero compact">
     <div class="container narrow">
       <span class="eyebrow"><span></span> Community submissions</span>
-      <h1>Submit a resource</h1>
+
+      <h1>Submit a Resource</h1>
+
       <p>
-        Share an article, video, book, conference session, podcast, or open-source
-        project related to SwiftUI architecture.
+        Share an article, video, book, conference talk, podcast, WWDC session,
+        or open source project related to SwiftUI architecture.
       </p>
     </div>
   </section>
 
   <section class="section">
     <div class="container form-layout">
+
       <form
         class="submission-form"
-        action="https://formspree.io/f/replace-with-your-form-id"
-        method="post"
+        action="https://formsubmit.co/azamsharp@gmail.com"
+        method="POST"
       >
+
+        <!-- Email subject -->
+        <input
+          type="hidden"
+          name="_subject"
+          value="New SwiftUI Architecture Resource Submission"
+        />
+
+        <!-- Redirect after successful submission -->
+        <input
+          type="hidden"
+          name="_next"
+          value="https://swiftuiarchitecture.com/submission-success/"
+        />
+
+        <!-- Nicely formatted email -->
+        <input
+          type="hidden"
+          name="_template"
+          value="table"
+        />
+
+        <!-- Enable CAPTCHA -->
+        <input
+          type="hidden"
+          name="_captcha"
+          value="true"
+        />
+
+        <!-- Honeypot spam trap -->
+        <input
+          type="text"
+          name="_honey"
+          class="honeypot"
+          tabindex="-1"
+          autocomplete="off"
+        />
+
         <div class="field">
           <label for="title">Resource title</label>
-          <input id="title" name="title" required />
+          <input
+            id="title"
+            name="title"
+            type="text"
+            required
+          />
         </div>
 
         <div class="field">
           <label for="url">Resource URL</label>
-          <input id="url" name="url" type="url" required />
+          <input
+            id="url"
+            name="url"
+            type="url"
+            placeholder="https://"
+            required
+          />
         </div>
 
         <div class="field-grid">
           <div class="field">
             <label for="author">Author or creator</label>
-            <input id="author" name="author" required />
+            <input
+              id="author"
+              name="author"
+              type="text"
+              required
+            />
           </div>
 
           <div class="field">
             <label for="type">Resource type</label>
-            <select id="type" name="type">
+
+            <select
+              id="type"
+              name="type"
+              required
+            >
+              <option value="">Select a resource type</option>
               <option>Article</option>
               <option>Video</option>
               <option>Book</option>
-              <option>Open Source</option>
+              <option>Conference Talk</option>
               <option>WWDC Session</option>
+              <option>Podcast</option>
+              <option>Open Source Project</option>
             </select>
           </div>
         </div>
 
-        <div class="field">
-          <label for="reason">Why should it be included?</label>
-          <textarea id="reason" name="reason" rows="6"></textarea>
+        <div class="field-grid">
+          <div class="field">
+            <label for="submitterName">Your name</label>
+            <input
+              id="submitterName"
+              name="submitterName"
+              type="text"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="email">Your email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+            />
+          </div>
         </div>
 
-        <button class="button button-primary" type="submit">
+        <div class="field">
+          <label for="reason">
+            Why should this resource be included?
+          </label>
+
+          <textarea
+            id="reason"
+            name="reason"
+            rows="6"
+            placeholder="Tell us why this resource would benefit the SwiftUI Architecture community."
+            required
+          ></textarea>
+        </div>
+
+        <button
+          class="button button-primary"
+          type="submit"
+        >
           Submit Resource
         </button>
+
       </form>
 
       <aside class="submission-note">
-        <h2>Before publishing</h2>
+        <h2>Submission Guidelines</h2>
+
         <p>
-          Replace the Formspree URL in <code>src/pages/submit.astro</code> with
-          your own form endpoint.
+          Please submit links to the original publisher or creator.
         </p>
+
         <p>
-          Submissions should link to the original publisher. The site does not
-          republish complete community articles.
+          Every submission is reviewed before it is added to the library.
+          Quality, accuracy, and relevance to SwiftUI architecture are the
+          primary selection criteria.
+        </p>
+
+        <p>
+          We appreciate every submission, but inclusion is not guaranteed.
         </p>
       </aside>
+
     </div>
   </section>
 </BaseLayout>
+
+<style>
+.honeypot {
+  display: none;
+}
+</style>
