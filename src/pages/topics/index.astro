@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopicCard from "../../components/TopicCard.astro";
+import { topics } from "../../data/topics";
+
+const resources = await getCollection("resources");
+const counts = Object.fromEntries(
+  topics.map((topic) => [
+    topic.slug,
+    resources.filter((resource) => resource.data.topics.includes(topic.slug)).length
+  ])
+);
+---
+
+<BaseLayout
+  title="Topics"
+  description="Browse SwiftUI architecture resources by topic."
+>
+  <section class="page-hero compact">
+    <div class="container">
+      <span class="eyebrow"><span></span> Architecture library</span>
+      <h1>Browse by topic</h1>
+      <p>
+        Follow a focused learning path or jump directly to the problem you are
+        solving in your SwiftUI application.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container topic-grid">
+      {topics.map((topic) => (
+        <TopicCard topic={topic} count={counts[topic.slug]} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

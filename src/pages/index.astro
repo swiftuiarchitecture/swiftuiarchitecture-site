@@ -1,0 +1,129 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TopicCard from "../components/TopicCard.astro";
+import ResourceCard from "../components/ResourceCard.astro";
+import Newsletter from "../components/Newsletter.astro";
+import { topics } from "../data/topics";
+
+const resources = (await getCollection("resources")).sort(
+  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf()
+);
+
+const featured = resources.filter((resource) => resource.data.featured).slice(0, 3);
+const recent = resources.slice(0, 6);
+
+const counts = Object.fromEntries(
+  topics.map((topic) => [
+    topic.slug,
+    resources.filter((resource) => resource.data.topics.includes(topic.slug)).length
+  ])
+);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow"><span></span> Community-curated</span>
+        <h1>
+          Learn better
+          <span class="gradient-text">SwiftUI architecture.</span>
+        </h1>
+        <p>
+          Discover thoughtfully selected articles, videos, books, talks, and
+          open-source projects from across the Swift community.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="/resources/">Explore Resources</a>
+          <a class="button button-secondary" href="/topics/">Browse Topics</a>
+        </div>
+
+        <div class="hero-stats">
+          <div><strong>{resources.length}</strong><span>Curated resources</span></div>
+          <div><strong>{topics.length}</strong><span>Architecture topics</span></div>
+          <div><strong>{new Set(resources.map((r) => r.data.author)).size}</strong><span>Creators</span></div>
+        </div>
+      </div>
+
+      <aside class="featured-panel">
+        <div class="panel-label">
+          <strong>Featured resources</strong>
+          <span>Editor’s picks</span>
+        </div>
+
+        <div class="featured-stack">
+          {featured.map((resource, index) => (
+            <a
+              class:list={["featured-item", { primary: index === 0 }]}
+              href={resource.data.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>{resource.data.resourceType.replace("-", " ")}</span>
+              <h2>{resource.data.title}</h2>
+              <p>{resource.data.author} · {resource.data.difficulty}</p>
+            </a>
+          ))}
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">Explore</span>
+          <h2>Browse by topic</h2>
+          <p>Start with the architectural problem you are trying to solve.</p>
+        </div>
+        <a class="section-link" href="/topics/">View all topics →</a>
+      </div>
+
+      <div class="topic-grid">
+        {topics.slice(0, 6).map((topic) => (
+          <TopicCard topic={topic} count={counts[topic.slug]} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <span class="section-kicker">New additions</span>
+          <h2>Recently curated</h2>
+          <p>Useful resources selected for clarity and practical relevance.</p>
+        </div>
+        <a class="section-link" href="/resources/">Browse the library →</a>
+      </div>
+
+      <div class="resource-grid">
+        {recent.map((resource) => <ResourceCard resource={resource} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container community-callout">
+      <div>
+        <span class="section-kicker light">Community</span>
+        <h2>Published something useful?</h2>
+        <p>
+          Submit an article, video, conference talk, book, or open-source project
+          for consideration.
+        </p>
+      </div>
+      <a class="button button-light" href="/submit/">Submit a Resource</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <Newsletter />
+    </div>
+  </section>
+</BaseLayout>

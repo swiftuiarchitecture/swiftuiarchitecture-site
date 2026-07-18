@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ResourceCard from "../../components/ResourceCard.astro";
+
+const resources = (await getCollection("resources")).sort(
+  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="Resources"
+  description="Browse the complete SwiftUI Architecture resource library."
+>
+  <section class="page-hero compact">
+    <div class="container">
+      <span class="eyebrow"><span></span> Curated library</span>
+      <h1>All resources</h1>
+      <p>
+        Articles, videos, books, WWDC sessions, and open-source projects selected
+        for practical SwiftUI developers.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="resource-toolbar">
+        <p><strong>{resources.length}</strong> resources</p>
+        <p>Add or edit Markdown files in <code>src/content/resources</code>.</p>
+      </div>
+
+      <div class="resource-grid">
+        {resources.map((resource) => <ResourceCard resource={resource} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

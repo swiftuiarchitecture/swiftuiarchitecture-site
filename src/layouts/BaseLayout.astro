@@ -1,0 +1,73 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "SwiftUI Architecture",
+  description = "Community-curated SwiftUI architecture articles, videos, books, talks, and open-source projects."
+} = Astro.props;
+
+const pageTitle =
+  title === "SwiftUI Architecture" ? title : `${title} · SwiftUI Architecture`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="brand" aria-label="SwiftUI Architecture home">
+          <span class="brand-mark">S</span>
+          <span>SwiftUI Architecture</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="/resources/">Resources</a>
+          <a href="/topics/">Topics</a>
+          <a href="/about/">About</a>
+          <a href="/submit/">Submit</a>
+        </nav>
+
+        <a class="button button-primary nav-button" href="/submit/">
+          Submit a Resource
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a class="footer-brand" href="/">SwiftUI Architecture</a>
+          <p>Curated by Mohammad Azam for the SwiftUI community.</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="/resources/">Resources</a>
+          <a href="/topics/">Topics</a>
+          <a href="/about/">About</a>
+          <a href="/submit/">Submit</a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© {new Date().getFullYear()} SwiftUI Architecture.</span>
+        <span>Links open on their original publishers’ websites.</span>
+      </div>
+    </footer>
+  </body>
+</html>

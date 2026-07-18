@@ -1,0 +1,12 @@
+---
+const { topic, count = 0 } = Astro.props;
+---
+
+<a class="topic-card" href={`/topics/${topic.slug}/`}>
+  <span class="topic-symbol">{topic.symbol}</span>
+  <div>
+    <h3>{topic.title}</h3>
+    <p>{topic.description}</p>
+  </div>
+  <span class="topic-count">{count} resources</span>
+</a>

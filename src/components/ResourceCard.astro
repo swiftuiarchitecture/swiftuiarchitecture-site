@@ -1,0 +1,62 @@
+---
+const { resource, showTopics = true } = Astro.props;
+const data = resource.data;
+
+const typeLabels = {
+  article: "Article",
+  video: "Video",
+  book: "Book",
+  "open-source": "Open Source",
+  wwdc: "WWDC"
+};
+
+const difficultyLabels = {
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced"
+};
+---
+
+<article class="resource-card">
+  <div class="resource-topline">
+    <div class="resource-badges">
+      <span class="resource-type">{typeLabels[data.resourceType]}</span>
+      {data.featured && <span class="featured-badge">Editor’s Pick</span>}
+    </div>
+    <span class="resource-arrow" aria-hidden="true">↗</span>
+  </div>
+
+  <h3>
+    <a href={data.url} target="_blank" rel="noopener noreferrer">
+      {data.title}
+    </a>
+  </h3>
+
+  <p class="resource-summary">{data.summary}</p>
+
+  {
+    data.editorNote && (
+      <div class="editor-note-small">
+        <strong>Why read:</strong> {data.editorNote}
+      </div>
+    )
+  }
+
+  {
+    showTopics && (
+      <div class="resource-topics">
+        {data.topics.map((topic: string) => (
+          <a href={`/topics/${topic}/`}>{topic.replaceAll("-", " ")}</a>
+        ))}
+      </div>
+    )
+  }
+
+  <div class="resource-meta">
+    <span class="resource-author">{data.author}</span>
+    <span>
+      {difficultyLabels[data.difficulty]}
+      {data.duration ? ` · ${data.duration}` : ""}
+    </span>
+  </div>
+</article>

@@ -1,0 +1,78 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Submit a Resource"
+  description="Submit a SwiftUI architecture resource for consideration."
+>
+  <section class="page-hero compact">
+    <div class="container narrow">
+      <span class="eyebrow"><span></span> Community submissions</span>
+      <h1>Submit a resource</h1>
+      <p>
+        Share an article, video, book, conference session, podcast, or open-source
+        project related to SwiftUI architecture.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container form-layout">
+      <form
+        class="submission-form"
+        action="https://formspree.io/f/replace-with-your-form-id"
+        method="post"
+      >
+        <div class="field">
+          <label for="title">Resource title</label>
+          <input id="title" name="title" required />
+        </div>
+
+        <div class="field">
+          <label for="url">Resource URL</label>
+          <input id="url" name="url" type="url" required />
+        </div>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="author">Author or creator</label>
+            <input id="author" name="author" required />
+          </div>
+
+          <div class="field">
+            <label for="type">Resource type</label>
+            <select id="type" name="type">
+              <option>Article</option>
+              <option>Video</option>
+              <option>Book</option>
+              <option>Open Source</option>
+              <option>WWDC Session</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="reason">Why should it be included?</label>
+          <textarea id="reason" name="reason" rows="6"></textarea>
+        </div>
+
+        <button class="button button-primary" type="submit">
+          Submit Resource
+        </button>
+      </form>
+
+      <aside class="submission-note">
+        <h2>Before publishing</h2>
+        <p>
+          Replace the Formspree URL in <code>src/pages/submit.astro</code> with
+          your own form endpoint.
+        </p>
+        <p>
+          Submissions should link to the original publisher. The site does not
+          republish complete community articles.
+        </p>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

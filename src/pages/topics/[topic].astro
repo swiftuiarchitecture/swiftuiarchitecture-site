@@ -1,0 +1,105 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ResourceCard from "../../components/ResourceCard.astro";
+import Newsletter from "../../components/Newsletter.astro";
+import { topics, getTopic } from "../../data/topics";
+
+export async function getStaticPaths() {
+  return topics.map((topic) => ({
+    params: { topic: topic.slug },
+    props: { topic }
+  }));
+}
+
+const { topic } = Astro.props;
+const resources = (await getCollection(
+  "resources",
+  ({ data }) => data.topics.includes(topic.slug)
+)).sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  return b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf();
+});
+
+const relatedTopics = topic.related
+  .map((slug: string) => getTopic(slug))
+  .filter(Boolean);
+---
+
+<BaseLayout title={topic.title} description={topic.description}>
+  <section class="topic-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a><span>›</span>
+        <a href="/topics/">Topics</a><span>›</span>
+        <span>{topic.title}</span>
+      </nav>
+
+      <div class="topic-banner">
+        <div>
+          <span class="topic-label">{topic.symbol} SwiftUI Architecture Topic</span>
+          <h1>{topic.title}</h1>
+          <p>{topic.description}</p>
+        </div>
+
+        <div class="topic-total">
+          <strong>{resources.length}</strong>
+          <span>Curated resources</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container topic-layout">
+    <section>
+      <div class="editor-guidance">
+        <strong>Editor’s guidance</strong>
+        <p>{topic.guidance}</p>
+      </div>
+
+      <div class="section-heading small">
+        <div>
+          <span class="section-kicker">Library</span>
+          <h2>Recommended resources</h2>
+        </div>
+      </div>
+
+      <div class="resource-list">
+        {resources.map((resource) => (
+          <ResourceCard resource={resource} showTopics={false} />
+        ))}
+      </div>
+    </section>
+
+    <aside class="topic-sidebar">
+      <section class="side-card">
+        <h2>Learning path</h2>
+        <ol class="learning-path">
+          {topic.learningPath.map((step: string, index: number) => (
+            <li>
+              <span>{index + 1}</span>
+              <p>{step}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section class="side-card">
+        <h2>Related topics</h2>
+        <div class="related-list">
+          {relatedTopics.map((related: any) => (
+            <a href={`/topics/${related.slug}/`}>
+              <span>{related.title}</span><span>→</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <Newsletter />
+    </div>
+  </section>
+</BaseLayout>
