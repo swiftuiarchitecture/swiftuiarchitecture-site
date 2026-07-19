@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import TopicCard from "../components/TopicCard.astro";
 import ResourceCard from "../components/ResourceCard.astro";
 import Newsletter from "../components/Newsletter.astro";
 import { topics } from "../data/topics";
@@ -30,22 +29,16 @@ const recent = resources
 const books = resources
   .filter((resource) => resource.data.resourceType === "book")
   .slice(0, 6);
-
-const counts = Object.fromEntries(
-  topics.map((topic) => [
-    topic.slug,
-    resources.filter((resource) =>
-      resource.data.topics.includes(topic.slug)
-    ).length
-  ])
-);
 ---
 
 <BaseLayout>
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <span class="eyebrow"><span></span> Community-curated</span>
+        <span class="eyebrow">
+          <span></span>
+          Thoughtfully curated
+        </span>
 
         <h1>
           Learn better
@@ -87,104 +80,82 @@ const counts = Object.fromEntries(
         </div>
       </div>
 
-   <aside class="featured-panel">
-  <div class="panel-header">
-    <div>
-      <span class="panel-eyebrow">Curated by the editor</span>
-      <h2>Featured resources</h2>
-    </div>
+      <aside class="featured-panel">
+        <div class="panel-header">
+          <div>
+            <span class="panel-eyebrow">Curated by the editor</span>
+            <h2>Featured resources</h2>
+          </div>
 
-    <a class="view-all-link" href="/resources">
-      View all
-      <span aria-hidden="true">→</span>
-    </a>
-  </div>
-
-  <div class="featured-stack">
-    {
-      featured.map((resource, index) => {
-        const isPrimary = index === 0;
-        const isLiveEvent = resource.data.resourceType === "live-event";
-
-        return (
-          <a
-            class:list={[
-              "featured-item",
-              {
-                primary: isPrimary,
-                "live-event": isLiveEvent
-              }
-            ]}
-            href={resource.data.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div class="featured-meta">
-              <span class="resource-type">
-                {isLiveEvent
-                  ? "Live Event"
-                  : resource.data.resourceType.replace("-", " ")}
-              </span>
-
-              {isPrimary && (
-                <span class="featured-badge">
-                  Editor’s pick
-                </span>
-              )}
-            </div>
-
-            <h3>{resource.data.title}</h3>
-
-            {isPrimary && resource.data.summary && (
-              <p class="featured-summary">
-                {resource.data.summary}
-              </p>
-            )}
-
-            <div class="featured-footer">
-              <span>
-                {resource.data.author}
-                {resource.data.difficulty && (
-                  <> · {resource.data.difficulty}</>
-                )}
-              </span>
-
-              <span class="featured-arrow" aria-hidden="true">
-                →
-              </span>
-            </div>
+          <a class="view-all-link" href="/resources/">
+            View all
+            <span aria-hidden="true">→</span>
           </a>
-        );
-      })
-    }
-  </div>
-</aside>
-    </div>
-  </section>
-
-  <!--
-  <section class="section">
-    <div class="container">
-      <div class="section-heading">
-        <div>
-          <span class="section-kicker">Explore</span>
-          <h2>Browse by topic</h2>
-          <p>Start with the architectural problem you are trying to solve.</p>
         </div>
 
-        <a class="section-link" href="/topics/">
-          View all topics →
-        </a>
-      </div>
+        <div class="featured-stack">
+          {
+            featured.map((resource, index) => {
+              const isPrimary = index === 0;
+              const isLiveEvent =
+                resource.data.resourceType === "live-event";
 
-      <div class="topic-grid">
-        {topics.slice(0, 6).map((topic) => (
-          <TopicCard topic={topic} count={counts[topic.slug]} />
-        ))}
-      </div>
+              return (
+                <a
+                  class:list={[
+                    "featured-item",
+                    {
+                      primary: isPrimary,
+                      "live-event": isLiveEvent
+                    }
+                  ]}
+                  href={resource.data.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div class="featured-meta">
+                    <span class="resource-type">
+                      {isLiveEvent
+                        ? "Live Event"
+                        : resource.data.resourceType.replace("-", " ")}
+                    </span>
+
+                    {isPrimary && (
+                      <span class="featured-badge">
+                        Editor’s pick
+                      </span>
+                    )}
+                  </div>
+
+                  <h3>{resource.data.title}</h3>
+
+                  {isPrimary && resource.data.summary && (
+                    <p class="featured-summary">
+                      {resource.data.summary}
+                    </p>
+                  )}
+
+                  <div class="featured-footer">
+                    <span>
+                      {resource.data.author}
+
+                      {resource.data.difficulty && (
+                        <> · {resource.data.difficulty}</>
+                      )}
+                    </span>
+
+                    <span class="featured-arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </div>
+                </a>
+              );
+            })
+          }
+        </div>
+      </aside>
     </div>
   </section>
-  -->
 
   <section class="section section-muted">
     <div class="container">
@@ -192,7 +163,9 @@ const counts = Object.fromEntries(
         <div>
           <span class="section-kicker">New additions</span>
           <h2>Recently curated</h2>
-          <p>Useful resources selected for clarity and practical relevance.</p>
+          <p>
+            Useful resources selected for clarity and practical relevance.
+          </p>
         </div>
 
         <a class="section-link" href="/resources/">
@@ -208,6 +181,37 @@ const counts = Object.fromEntries(
     </div>
   </section>
 
+  <section class="section editor-section">
+    <div class="container">
+      <div class="editor-note">
+        <div class="editor-note-accent" aria-hidden="true"></div>
+
+        <div class="editor-note-content">
+          <span class="section-kicker">From the Editor</span>
+
+          <h2>Quality over quantity</h2>
+
+          <p>
+            SwiftUIArchitecture.com is not a directory of every SwiftUI
+            resource on the internet. Every article, video, book, talk, and
+            open-source project is personally reviewed before being added.
+          </p>
+
+          <p>
+            I look for resources that provide clear explanations, practical
+            techniques, and thoughtful approaches to building maintainable
+            SwiftUI applications.
+          </p>
+
+          <div class="editor-signature">
+            <strong>Mohammad Azam</strong>
+            <span>Founder and Editor</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   {books.length > 0 && (
     <section class="section">
       <div class="container">
@@ -215,6 +219,7 @@ const counts = Object.fromEntries(
           <div>
             <span class="section-kicker">Books</span>
             <h2>Essential SwiftUI architecture books</h2>
+
             <p>
               Carefully selected books covering architecture, state management,
               data flow, persistence, and application design.
@@ -242,8 +247,8 @@ const counts = Object.fromEntries(
         <h2>Published something useful?</h2>
 
         <p>
-          Submit an article, video, conference talk, book, or open-source project
-          for consideration.
+          Submit an article, video, conference talk, book, or open-source
+          project for consideration.
         </p>
       </div>
 
@@ -259,3 +264,91 @@ const counts = Object.fromEntries(
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .editor-section {
+    padding-top: 0;
+  }
+
+  .editor-note {
+    position: relative;
+    display: grid;
+    grid-template-columns: 5px minmax(0, 1fr);
+    overflow: hidden;
+    max-width: 960px;
+    margin-inline: auto;
+    border: 1px solid rgba(79, 70, 229, 0.16);
+    border-radius: 24px;
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(124, 58, 237, 0.1),
+        transparent 42%
+      ),
+      #ffffff;
+    box-shadow:
+      0 20px 50px rgba(15, 23, 42, 0.07),
+      0 2px 8px rgba(15, 23, 42, 0.04);
+  }
+
+  .editor-note-accent {
+    background: linear-gradient(
+      180deg,
+      #7c3aed,
+      #2563eb
+    );
+  }
+
+  .editor-note-content {
+    padding: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .editor-note h2 {
+    margin: 0.45rem 0 1.25rem;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: -0.04em;
+  }
+
+  .editor-note p {
+    max-width: 720px;
+    margin: 0 0 1rem;
+    color: var(--color-text-muted, #475569);
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+
+  .editor-signature {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+  }
+
+  .editor-signature strong {
+    color: var(--color-text, #0f172a);
+    font-size: 1rem;
+  }
+
+  .editor-signature span {
+    margin-top: 0.2rem;
+    color: var(--color-text-muted, #64748b);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 640px) {
+    .editor-note {
+      grid-template-columns: 4px minmax(0, 1fr);
+      border-radius: 18px;
+    }
+
+    .editor-note-content {
+      padding: 1.75rem 1.5rem;
+    }
+
+    .editor-note p {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+  }
+</style>
