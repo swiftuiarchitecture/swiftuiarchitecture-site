@@ -15,7 +15,16 @@ const featured = resources
   .slice(0, 3);
 
 const recent = resources
-  .filter((resource) => resource.data.resourceType !== "book")
+  .filter(
+    (resource) =>
+      resource.data.resourceType !== "book" &&
+      !resource.data.featured
+  )
+  .sort(
+    (a, b) =>
+      b.data.publishedDate.getTime() -
+      a.data.publishedDate.getTime()
+  )
   .slice(0, 6);
 
 const books = resources
@@ -78,29 +87,78 @@ const counts = Object.fromEntries(
         </div>
       </div>
 
-      <aside class="featured-panel">
-        <div class="panel-label">
-          <strong>Featured resources</strong>
-          <span>Editor’s picks</span>
-        </div>
+   <aside class="featured-panel">
+  <div class="panel-header">
+    <div>
+      <span class="panel-eyebrow">Curated by the editor</span>
+      <h2>Featured resources</h2>
+    </div>
 
-        <div class="featured-stack">
-          {featured.map((resource, index) => (
-            <a
-              class:list={["featured-item", { primary: index === 0 }]}
-              href={resource.data.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>{resource.data.resourceType.replace("-", " ")}</span>
-              <h2>{resource.data.title}</h2>
-              <p>
-                {resource.data.author} · {resource.data.difficulty}
+    <a class="view-all-link" href="/resources">
+      View all
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <div class="featured-stack">
+    {
+      featured.map((resource, index) => {
+        const isPrimary = index === 0;
+        const isLiveEvent = resource.data.resourceType === "live-event";
+
+        return (
+          <a
+            class:list={[
+              "featured-item",
+              {
+                primary: isPrimary,
+                "live-event": isLiveEvent
+              }
+            ]}
+            href={resource.data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="featured-meta">
+              <span class="resource-type">
+                {isLiveEvent
+                  ? "Live Event"
+                  : resource.data.resourceType.replace("-", " ")}
+              </span>
+
+              {isPrimary && (
+                <span class="featured-badge">
+                  Editor’s pick
+                </span>
+              )}
+            </div>
+
+            <h3>{resource.data.title}</h3>
+
+            {isPrimary && resource.data.summary && (
+              <p class="featured-summary">
+                {resource.data.summary}
               </p>
-            </a>
-          ))}
-        </div>
-      </aside>
+            )}
+
+            <div class="featured-footer">
+              <span>
+                {resource.data.author}
+                {resource.data.difficulty && (
+                  <> · {resource.data.difficulty}</>
+                )}
+              </span>
+
+              <span class="featured-arrow" aria-hidden="true">
+                →
+              </span>
+            </div>
+          </a>
+        );
+      })
+    }
+  </div>
+</aside>
     </div>
   </section>
 

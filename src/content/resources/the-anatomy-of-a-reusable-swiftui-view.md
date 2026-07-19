@@ -8,7 +8,7 @@ topics:
   - "design-system"
 difficulty: "intermediate"
 url: "https://alexanderweiss.dev/blog/2026-07-12-the-anatomy-of-a-reusable-swiftui-view"
-publishedDate: "2026-07-12"
+publishedDate: "2026-07-20"
 featured: true
 summary: "Learn how to design reusable SwiftUI components that feel native by following Apple's API conventions, modeling component semantics first, and using styles, environment values, and progressive disclosure to create flexible, maintainable APIs."
 editorNote: "One of the best articles on designing reusable SwiftUI views. It goes beyond implementation details and explains the reasoning behind API design, data flow, customization, and component architecture."
