@@ -9,7 +9,7 @@ topics:
   - "accessibility"
   - "api-design"
 difficulty: "advanced"
-url: "https://nilcoalescing.com/books/the-swiftui-way/"
+url: "https://books.nilcoalescing.com/"
 publishedDate: "2026-03-24"
 featured: false
 summary: "A practical guide to building scalable SwiftUI applications by adopting recommended patterns, avoiding common anti-patterns, and understanding the framework's design principles."
