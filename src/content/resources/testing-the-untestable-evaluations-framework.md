@@ -8,7 +8,7 @@ topics:
   - "ai"
   - "llm"
 difficulty: "advanced"
-url: "https://www.walidsassi.com/posts/evaluations-framework"
+url: "https://swifttribune.walidsassi.com/posts/apple-evaluations-framework/"
 publishedDate: "2026-07-19"
 featured: true
 summary: "Learn how to evaluate Foundation Models-powered features using Apple's new Evaluations framework, including datasets, evaluators, metrics, synthetic sample generation, and Swift Testing integration."
